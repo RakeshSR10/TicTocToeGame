@@ -2,22 +2,24 @@
 import java.util.Scanner;
 public class TicTocToeGame
 {
-        static char board[][] = new char[3][3];
-        //display function
-        static void Display(char board[][])
-        {
-                for(int i=0; i<3; i++)
-                {
-                        for(int j=0; j<3; j++)
-                        {
-                                System.out.print(board[i][j]+" ");
-                        }
-                        System.out.println();
-                }
-        }
-
+	static char board[][] = new char[3][3];
+	
+	
+	//display function
+	static void Display(char board[][])
+	{
+		for(int i=0; i<3; i++)
+		{
+			for(int j=0; j<3; j++)
+			{
+				System.out.print(board[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+//-------------------------------------------------------------------------
 	//Replace function
-	public static void Replace(TicTocToe game, char board[][], char find, char replace)
+	public static void Replace(TicTocToeGame game, char board[][], char find, char replace)
 	{
 		for(int i=0; i<3; i++)
 		{
@@ -31,9 +33,49 @@ public class TicTocToeGame
 			}
 		}
 	}
-        public static void main(String[] args)
-        {
-				Scanner in = new Scanner(System.in);
+//--------------------------------------------------------------------------
+	//checkForRow function
+	public boolean checkForRow()
+	{
+		for(int i=0; i<3; i++)
+		{
+			if(check(board[i][0],board[i][1],board[i][2]) == true)
+				return true;
+		}
+		return false;
+	}
+	//checkForColumn function
+	public boolean checkForColumn()
+	{
+		for(int i=0; i<3; i++)
+		{
+			if(check(board[0][i],board[1][i],board[2][i]) == true)
+				return true;
+		}
+		return false;
+	}
+	//checkForDiagnol Function
+	public boolean checkForDiagnol()
+	{
+		return((check(board[0][0], board[1][1], board[2][2]) == true) || (check(board[0][2], board[1][1], board[2][0]) == true));
+	}
+//-------------------------------------------	
+	//checkForWinner function
+		public boolean checkForWinner()
+		{
+			return (checkForRow() || checkForColumn() || checkForDiagnol());
+		}
+	//check Function
+	public boolean check(char c1, char c2, char c3)
+	{
+		return ((c1==c2) && (c2==c3));
+		
+	}
+
+	public static void main(String[] args)
+	{
+		//(2)input player name and marker
+		Scanner in = new Scanner(System.in);
 		//Take player names
 		String player1 = null, player2 = null;
 		System.out.print("Enter player1 name = ");
@@ -58,7 +100,7 @@ public class TicTocToeGame
 		else
 			player2Marker = 'x';
 		
-		TicTocToe game = new TicTocToe();
+		TicTocToeGame game = new TicTocToeGame();
 
 		int counter=0;
 		for(int i=0; i<3; i++)
@@ -90,5 +132,10 @@ public class TicTocToeGame
 		choice=in.next().charAt(0);
 		Replace(game, board, choice, player1Marker);
 		Display(game.board);
-        }
+
+		if(game.checkForWinner())
+			System.out.println("We have a winner:");
+		else
+			System.out.println("Match is Draw");
+	}
 }
